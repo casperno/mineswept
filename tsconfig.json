@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "noImplicitAny": true,
+        "target": "es5",
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "outDir": "./built",
+        "sourceMap": true,
+        "lib": [
+            "dom",
+            "es2015",
+            "es2018.promise"
+        ],
+        "plugins": [
+            { "name": "typescript-tslint-plugin" }
+          ]
+    },
+    "include": [
+        "src/**/*",
+        "tests/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/*.spec.ts"
+    ]
+}
