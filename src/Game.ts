@@ -1,4 +1,7 @@
 export class Game {
+
+    private demoMode = true;
+
     constructor() {
         const boardContainer = document.getElementById('board');
         this.generateBoard(boardContainer, 20, 20);
@@ -18,14 +21,18 @@ export class Game {
         const div = document.createElement('div');
         div.className = "cell";
 
-        if (Math.random() > .2) {
+        if (this.demoMode) {
+
 
             if (Math.random() > .2) {
-                const icon = Math.random() > .5 ? 'icon-flag' : 'icon-bomb';
-                div.innerHTML = `<i class='${icon}'></i>`
-            } else {
 
-                div.innerHTML = `<span class='count'>${Math.ceil(Math.random() * 7).toString()}</span>`;
+                if (Math.random() > .2) {
+                    const icon = Math.random() > .5 ? 'icon-flag' : 'icon-bomb';
+                    div.innerHTML = `<i class='${icon}'></i>`
+                } else {
+
+                    div.innerHTML = `<span class='count'>${Math.ceil(Math.random() * 7).toString()}</span>`;
+                }
             }
         }
 
