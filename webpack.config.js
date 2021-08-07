@@ -2,7 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  watch:true,
+  watch: true,
   entry: './src/main.ts',
   module: {
     rules: [
@@ -22,25 +22,29 @@ module.exports = {
           "sass-loader",
         ],
       },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        type: 'asset/resource',
+      },
     ]
   },
-  mode:'development',
+  mode: 'development',
   devServer: {
     contentBase: "./src"
   },
   devtool: 'inline-source-map',
   plugins: [
     new HtmlWebpackPlugin({
-     title: 'Development',
-     template: './src/index.html'
+      title: 'Development',
+      template: './src/index.html'
     }),
   ],
   resolve: {
-    extensions: [ '.tsx', '.ts', '.js' ]
+    extensions: ['.tsx', '.ts', '.js']
   },
   output: {
     path: path.resolve(__dirname, 'built'),
     filename: 'main.js',
-    clean:true
+    clean: true
   }
 };
