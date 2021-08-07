@@ -1,5 +1,8 @@
 import "./style.scss";
+import {Game} from "./Game";
 
-class main {
-    
+console.log("init");
+function init() {
+    let g = new Game();
 }
+init();
