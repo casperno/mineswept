@@ -3,3 +3,11 @@ $text-color: #550033;
 body {
     color: $text-color;
 }
+
+.board-grid {
+    display: grid;
+    grid-template-columns: repeat(20, 10px);
+    grid-gap: 10px;
+    background-color: #fff;
+    color: #444;
+}
