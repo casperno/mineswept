@@ -17,10 +17,17 @@ export class Game {
     private createCell() {
         const div = document.createElement('div');
         div.className = "cell";
-        let icon = '';
-        if (Math.random() > .2)
-            icon = Math.random() > .5 ? 'icon-flag' : 'icon-bomb';
-        div.innerHTML = `<i class='${icon}'></i>`
+
+        if (Math.random() > .2) {
+
+            if (Math.random() > .2) {
+                const icon = Math.random() > .5 ? 'icon-flag' : 'icon-bomb';
+                div.innerHTML = `<i class='${icon}'></i>`
+            } else {
+
+                div.innerHTML = `<span class='count'>${Math.ceil(Math.random() * 7).toString()}</span>`;
+            }
+        }
 
         return div;
     }

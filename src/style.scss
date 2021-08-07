@@ -10,7 +10,8 @@ $text-color: #550033;
 
 body {
    // color: $text-color;
-   background: rgb(202, 218, 180)
+   background: rgb(202, 218, 180);
+   font-family: Arial, Helvetica, sans-serif;
 }
 
 .board-grid {
@@ -30,6 +31,12 @@ $size: 25px;
     border-top-color: #fff;
     border-left-color: #fff; 
     background-color: #eee;
+    text-align: center;
+
+    .count {
+        padding-top: 0.2em;
+        display: inline-block;
+    }
 }
 
 [class^="icon-"]:before, [class*=" icon-"]:before {
@@ -54,7 +61,7 @@ $size: 25px;
     /* Animation center compensation - margins should be symmetric */
     /* remove if not needed */
     margin-left: .30em;
-    margin-top: .23em;
+    margin-top: .2em;
   
     /* you can be more comfortable with increased icons size */
     /* font-size: 120%; */
