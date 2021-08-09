@@ -25,7 +25,7 @@ export class Game {
 
   private createCell(index: number) {
     const div = document.createElement("div");
-    div.className = "cell open";
+    div.className = "cell";
     div.setAttribute("i", index.toString());
     if (this.demoMode) {
       if (Math.random() > 0.2) {
@@ -40,14 +40,18 @@ export class Game {
       }
     }
 
-    div.addEventListener("click", (e: MouseEvent) => {
-      const index = parseInt(
-        (e.currentTarget as HTMLElement).getAttribute("i")
-      );
-      console.log("click index ", index, this.getCoordinates(index));
-    });
+    div.addEventListener("click", (e: MouseEvent) => this.cellClickHandler(e));
 
     return div;
+  }
+
+  private cellClickHandler(e: MouseEvent) {
+    const elem = e.currentTarget as HTMLElement;
+    const index = parseInt(elem.getAttribute("i"));
+
+    elem.className += " open";
+
+    console.log("click index ", index, this.getCoordinates(index));
   }
 
   private getCoordinates(index: number) {

@@ -31,13 +31,13 @@ $size: 29px;
   border: 1px solid #ccc;
   border-top-color: #fff;
   border-left-color: #fff;
-  background-color: #eee;
+  background-color: lighten($color: $bg-color, $amount: 7);
   text-align: center;
   box-sizing: border-box;
   cursor: pointer;
 
   &.open {
-    border: none;
+    border: 1px solid darken($color: $bg-color, $amount: 10);
     background-color: darken($color: $bg-color, $amount: 10);
   }
 
