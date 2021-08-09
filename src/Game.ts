@@ -23,7 +23,6 @@ export class Game {
 
         if (this.demoMode) {
 
-
             if (Math.random() > .2) {
 
                 if (Math.random() > .2) {
