@@ -36,8 +36,8 @@ export class Board {
     this.target.style.gridTemplateColumns = `repeat(${cols}, 29px)`;
 
     let c = 0;
-    for (let j = 0; j < cols; j++) {
-      for (let i = 0; i < rows; i++) {
+    for (let i = 0; i < rows; i++) {
+      for (let j = 0; j < cols; j++) {
         const elem = this.createCell(c++);
         if (!this.elements[j]) this.elements[j] = [];
         this.elements[j][i] = elem;
@@ -73,7 +73,7 @@ export class Board {
     const elem = e.currentTarget as HTMLElement;
     const index = parseInt(elem.getAttribute("i"));
 
-    elem.className += " open";
+    //elem.className += " open";
     const { col, row } = this.getCoordinates(index);
     this.clickClb(col, row);
   }

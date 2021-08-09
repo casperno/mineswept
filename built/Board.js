@@ -18,8 +18,8 @@ var Board = (function () {
     Board.prototype.generateBoard = function (cols, rows) {
         this.target.style.gridTemplateColumns = "repeat(" + cols + ", 29px)";
         var c = 0;
-        for (var j = 0; j < cols; j++) {
-            for (var i = 0; i < rows; i++) {
+        for (var i = 0; i < rows; i++) {
+            for (var j = 0; j < cols; j++) {
                 var elem = this.createCell(c++);
                 if (!this.elements[j])
                     this.elements[j] = [];
@@ -50,7 +50,6 @@ var Board = (function () {
     Board.prototype.cellClickHandler = function (e) {
         var elem = e.currentTarget;
         var index = parseInt(elem.getAttribute("i"));
-        elem.className += " open";
         var _a = this.getCoordinates(index), col = _a.col, row = _a.row;
         this.clickClb(col, row);
     };
