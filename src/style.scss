@@ -1,81 +1,98 @@
 $text-color: #550033;
+$bg-color: rgb(202, 218, 180);
 
 @font-face {
-    font-family: 'fontello';
-    src: 
-         url('./res/fontello.woff?24106187') format('woff');
-    font-weight: normal;
-    font-style: normal;
-  }
+  font-family: "fontello";
+  src: url("./res/fontello.woff?24106187") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
 
 body {
-   // color: $text-color;
-   background: rgb(202, 218, 180);
-   font-family: Arial, Helvetica, sans-serif;
+  // color: $text-color;
+  background: $bg-color;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .board-grid {
-    display: grid;
-    //grid-template-columns: repeat(20, 5px);
-    grid-gap: 1px;
-    color: #444;
+  margin: 20px;
+  display: grid;
+  //grid-template-columns: repeat(20, 5px); // set in code, matches number of cols
+  grid-gap: 1px;
+  color: #444;
 }
 
-$size: 25px;
+$size: 29px;
 
 .cell {
-    display: inline-block;
-    width: $size ;    
-    height: $size ;    
-    border: 1px solid #ccc;
-    border-top-color: #fff;
-    border-left-color: #fff; 
-    background-color: #eee;
-    text-align: center;
+  display: inline-block;
+  width: $size;
+  height: $size;
+  border: 1px solid #ccc;
+  border-top-color: #fff;
+  border-left-color: #fff;
+  background-color: #eee;
+  text-align: center;
+  box-sizing: border-box;
+  cursor: pointer;
 
-    .count {
-        padding-top: 0.2em;
-        display: inline-block;
-        font-family: monospace;
-        font-size: 1.2em;
-        font-weight: bold;
-    }
+  &.open {
+    border: none;
+    background-color: darken($color: $bg-color, $amount: 10);
+  }
+
+  .count {
+    padding-top: 0.35em;
+    display: inline-block;
+    font-family: monospace;
+    font-size: 1.2em;
+    font-weight: bold;
+    pointer-events: none;
+  }
 }
 
-[class^="icon-"]:before, [class*=" icon-"]:before {
-    font-family: "fontello";
-    font-style: normal;
-    font-weight: normal;
-  
-    display: inline-block;
-    text-decoration: inherit;
-    width: 1em;
-    margin-right: .2em;
-    text-align: center;
-    /* opacity: .8; */
-  
-    /* For safety - reset parent styles, that can break glyph codes*/
-    font-variant: normal;
-    text-transform: none;
-  
-    /* fix buttons height, for twitter bootstrap */
-    line-height: 1em;
-  
-    /* Animation center compensation - margins should be symmetric */
-    /* remove if not needed */
-    margin-left: .30em;
-    margin-top: .2em;
-  
-    /* you can be more comfortable with increased icons size */
-    /* font-size: 120%; */
-  
-    /* Font smoothing. That was taken from TWBS */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  
-    /* Uncomment for 3D effect */
-    /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
-  }
-  
-  .icon-flag:before { content: '\e800';color:blue } /* '' */
-  .icon-bomb:before { content: '\f1e2'; color:red} /* '' */
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+  font-family: "fontello";
+  font-style: normal;
+  font-weight: normal;
+
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: 0.2em;
+  text-align: center;
+  /* opacity: .8; */
+  pointer-events: none;
+
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+  margin-left: 0.5em;
+  margin-top: 0.3em;
+
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+
+  /* Font smoothing. That was taken from TWBS */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+
+.icon-flag:before {
+  content: "\e800";
+  color: rgb(16, 70, 141);
+}
+.icon-bomb:before {
+  content: "\f1e2";
+  color: rgb(168, 24, 24);
+}
