@@ -1,13 +1,19 @@
 import { Board } from "./Board";
 
 export class Game {
+  private boardContainer: HTMLElement;
+
   constructor() {
-    const boardContainer = document.getElementById("board");
+    this.boardContainer = document.getElementById("board");
+
+    this.initBoard();
+  }
+
+  private initBoard() {
     let board: Board;
     const clickHandler = (col: number, row: number) => {
-      console.log("clicked " + col + ", " + row);
       board.setOpen(col, row);
     };
-    board = new Board(boardContainer, 20, 20, clickHandler);
+    board = new Board(this.boardContainer, 20, 20, clickHandler);
   }
 }

@@ -4,14 +4,16 @@ exports.Game = void 0;
 var Board_1 = require("./Board");
 var Game = (function () {
     function Game() {
-        var boardContainer = document.getElementById("board");
+        this.boardContainer = document.getElementById("board");
+        this.initBoard();
+    }
+    Game.prototype.initBoard = function () {
         var board;
         var clickHandler = function (col, row) {
-            console.log("clicked " + col + ", " + row);
             board.setOpen(col, row);
         };
-        board = new Board_1.Board(boardContainer, 20, 20, clickHandler);
-    }
+        board = new Board_1.Board(this.boardContainer, 20, 20, clickHandler);
+    };
     return Game;
 }());
 exports.Game = Game;
