@@ -1,8 +1,7 @@
 import "./style.scss";
-import {Game} from "./Game";
+import { Game } from "./Game";
 
-console.log("init");
 function init() {
-    let g = new Game();
+  let g = new Game();
 }
 init();
