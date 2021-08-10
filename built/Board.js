@@ -15,6 +15,8 @@ var Board = (function () {
         var _this = this;
         field.forEach(function (c, col) {
             return c.forEach(function (r, row) {
+                if (r.open)
+                    _this.setOpen(col, row);
                 if (r.mine)
                     _this.setMine(col, row);
                 else if (r.count > 0) {
@@ -28,15 +30,18 @@ var Board = (function () {
         countElemt.className = "count";
         countElemt.innerText = count.toString();
         var elem = this.elements[col][row];
+        elem.innerHTML = " ";
         elem.appendChild(countElemt);
     };
     Board.prototype.setMine = function (col, row) {
         var elem = this.elements[col][row];
-        elem.className += " icon-bomb";
+        if (elem.className.indexOf("icon-bomb") === -1)
+            elem.className += " icon-bomb";
     };
     Board.prototype.setOpen = function (col, row) {
         var elem = this.elements[col][row];
-        elem.className += " open";
+        if (elem.className.indexOf("open") === -1)
+            elem.className += " open";
     };
     Board.prototype.generateBoard = function (cols, rows) {
         this.target.style.gridTemplateColumns = "repeat(" + cols + ", 29px)";

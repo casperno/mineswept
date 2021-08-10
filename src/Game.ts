@@ -14,14 +14,15 @@ export class Game {
     const cols = 20;
     const rows = 20;
 
-    let board: Board;
-    const clickHandler = (col: number, row: number) => {
-      board.setOpen(col, row);
-    };
-    board = new Board(this.boardContainer, cols, rows, clickHandler);
-
     const model = new Model();
     model.distributeMines(cols, rows);
+
+    let board: Board;
+    const clickHandler = (col: number, row: number) => {
+      model.setAsOpen(col, row);
+      board.setMineField(model.getMinefield());
+    };
+    board = new Board(this.boardContainer, cols, rows, clickHandler);
 
     board.setMineField(model.getMinefield());
   }

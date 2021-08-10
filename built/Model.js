@@ -5,6 +5,18 @@ var Model = (function () {
     function Model() {
         this.field = [];
     }
+    Model.prototype.setAsOpen = function (col, row) {
+        this.field[col][row].open = true;
+        if (this.field[col][row].count === 0) {
+            for (var i = col - 1; i < col + 2; i++) {
+                for (var j = row - 1; j < row + 2; j++) {
+                    if (this.field[i] && this.field[i][j] && !this.field[i][j].open) {
+                        this.setAsOpen(i, j);
+                    }
+                }
+            }
+        }
+    };
     Model.prototype.countSurroundingMines = function (col, row) {
         var _a;
         var countedMines = 0;
@@ -23,7 +35,7 @@ var Model = (function () {
         for (var i = 0; i < cols; i++) {
             this.field[i] = [];
             for (var j = 0; j < rows; j++) {
-                this.field[i][j] = { mine: false, count: 0 };
+                this.field[i][j] = { mine: false, count: 0, open: false };
             }
         }
         var numMines = Math.floor(cols * rows * factor);

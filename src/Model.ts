@@ -1,4 +1,4 @@
-export type minefield = { mine: Boolean; count: number }[][];
+export type minefield = { mine: boolean; count: number; open: boolean }[][];
 
 export class Model {
   cols: number;
@@ -6,7 +6,22 @@ export class Model {
   field: minefield = [];
   constructor() {}
 
-  countSurroundingMines(col: number, row: number) {
+  setAsOpen(col: number, row: number) {
+    this.field[col][row].open = true;
+
+    // if cell has no surrounding bombs, open ajacent cells
+    if (this.field[col][row].count === 0) {
+      for (let i = col - 1; i < col + 2; i++) {
+        for (let j = row - 1; j < row + 2; j++) {
+          if (this.field[i] && this.field[i][j] && !this.field[i][j].open) {
+            this.setAsOpen(i, j);
+          }
+        }
+      }
+    }
+  }
+
+  private countSurroundingMines(col: number, row: number) {
     let countedMines = 0;
     for (let i = col - 1; i < col + 2; i++) {
       for (let j = row - 1; j < row + 2; j++) {
@@ -22,7 +37,7 @@ export class Model {
     for (let i = 0; i < cols; i++) {
       this.field[i] = [];
       for (let j = 0; j < rows; j++) {
-        this.field[i][j] = { mine: false, count: 0 };
+        this.field[i][j] = { mine: false, count: 0, open: false };
       }
     }
 

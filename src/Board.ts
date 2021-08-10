@@ -32,6 +32,7 @@ export class Board {
   setMineField(field: minefield) {
     field.forEach((c, col) =>
       c.forEach((r, row) => {
+        if (r.open) this.setOpen(col, row);
         if (r.mine) this.setMine(col, row);
         else if (r.count > 0) {
           this.setCount(col, row, r.count);
@@ -44,17 +45,19 @@ export class Board {
     countElemt.className = "count";
     countElemt.innerText = count.toString();
     const elem = this.elements[col][row];
+    elem.innerHTML = " ";
     elem.appendChild(countElemt);
   }
 
   setMine(col: number, row: number) {
     const elem = this.elements[col][row];
-    elem.className += " icon-bomb";
+    if (elem.className.indexOf("icon-bomb") === -1)
+      elem.className += " icon-bomb";
   }
 
   setOpen(col: number, row: number) {
     const elem = this.elements[col][row];
-    elem.className += " open";
+    if (elem.className.indexOf("open") === -1) elem.className += " open";
   }
 
   private generateBoard(cols: number, rows: number) {
