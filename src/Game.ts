@@ -15,11 +15,20 @@ export class Game {
     const rows = 20;
 
     const model = new Model();
+    this.boardContainer.innerHTML = "";
     model.distributeMines(cols, rows);
 
     let board: Board;
-    const clickHandler = (col: number, row: number) => {
-      model.setAsOpen(col, row);
+    const clickHandler = (col: number, row: number, rightClick: boolean) => {
+      if (rightClick) {
+        model.toggleFlagged(col, row);
+      } else {
+        const isMine = model.setAsOpen(col, row);
+        if (isMine) {
+          alert("You bombed out!");
+          this.initGame();
+        }
+      }
       board.setMineField(model.getMinefield());
     };
     board = new Board(this.boardContainer, cols, rows, clickHandler);

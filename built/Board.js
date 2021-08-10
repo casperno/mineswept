@@ -15,33 +15,22 @@ var Board = (function () {
         var _this = this;
         field.forEach(function (c, col) {
             return c.forEach(function (r, row) {
+                var cssClass = ["cell"];
+                if (r.flagged)
+                    cssClass.push("icon-flag");
                 if (r.open)
-                    _this.setOpen(col, row);
-                if (r.mine)
-                    _this.setMine(col, row);
-                else if (r.count > 0) {
-                    _this.setCount(col, row, r.count);
+                    cssClass.push("open");
+                var elem = _this.elements[col][row];
+                elem.className = cssClass.join(" ");
+                elem.innerHTML = " ";
+                if (r.count > 0 && !r.mine) {
+                    var countElemt = document.createElement("span");
+                    countElemt.className = "count";
+                    countElemt.innerText = r.count.toString();
+                    elem.appendChild(countElemt);
                 }
             });
         });
-    };
-    Board.prototype.setCount = function (col, row, count) {
-        var countElemt = document.createElement("span");
-        countElemt.className = "count";
-        countElemt.innerText = count.toString();
-        var elem = this.elements[col][row];
-        elem.innerHTML = " ";
-        elem.appendChild(countElemt);
-    };
-    Board.prototype.setMine = function (col, row) {
-        var elem = this.elements[col][row];
-        if (elem.className.indexOf("icon-bomb") === -1)
-            elem.className += " icon-bomb";
-    };
-    Board.prototype.setOpen = function (col, row) {
-        var elem = this.elements[col][row];
-        if (elem.className.indexOf("open") === -1)
-            elem.className += " open";
     };
     Board.prototype.generateBoard = function (cols, rows) {
         this.target.style.gridTemplateColumns = "repeat(" + cols + ", 29px)";
@@ -72,14 +61,20 @@ var Board = (function () {
                 }
             }
         }
-        div.addEventListener("click", function (e) { return _this.cellClickHandler(e); });
+        div.addEventListener("click", function (e) {
+            return _this.cellClickHandler(e, false);
+        });
+        div.addEventListener("contextmenu", function (e) {
+            return _this.cellClickHandler(e, true);
+        });
         return div;
     };
-    Board.prototype.cellClickHandler = function (e) {
+    Board.prototype.cellClickHandler = function (e, contextClick) {
         var elem = e.currentTarget;
         var index = parseInt(elem.getAttribute("i"));
         var _a = this.getCoordinates(index), col = _a.col, row = _a.row;
-        this.clickClb(col, row);
+        this.clickClb(col, row, contextClick);
+        e.preventDefault();
     };
     Board.prototype.getElement = function (col, row) { };
     Board.prototype.getCoordinates = function (index) {

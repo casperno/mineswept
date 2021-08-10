@@ -39,6 +39,10 @@ $size: 29px;
   &.open {
     border: 1px solid darken($color: $bg-color, $amount: 10);
     background-color: darken($color: $bg-color, $amount: 10);
+
+    .count {
+      opacity: 1;
+    }
   }
 
   .count {
@@ -48,6 +52,7 @@ $size: 29px;
     font-size: 1.2em;
     font-weight: bold;
     pointer-events: none;
+    opacity: 0.1;
   }
 }
 
@@ -67,7 +72,6 @@ $size: 29px;
   width: 1em;
   margin-right: 0.2em;
   text-align: center;
-  opacity: 0.2;
 
   pointer-events: none;
 

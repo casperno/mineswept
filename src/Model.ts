@@ -1,4 +1,9 @@
-export type minefield = { mine: boolean; count: number; open: boolean }[][];
+export type minefield = {
+  mine: boolean;
+  count: number;
+  open: boolean;
+  flagged: boolean;
+}[][];
 
 export class Model {
   cols: number;
@@ -6,7 +11,12 @@ export class Model {
   field: minefield = [];
   constructor() {}
 
+  toggleFlagged(col: number, row: number) {
+    this.field[col][row].flagged = !this.field[col][row].flagged;
+  }
+
   setAsOpen(col: number, row: number) {
+    if (this.field[col][row].mine) return true;
     this.field[col][row].open = true;
 
     // if cell has no surrounding bombs, open ajacent cells
@@ -37,7 +47,12 @@ export class Model {
     for (let i = 0; i < cols; i++) {
       this.field[i] = [];
       for (let j = 0; j < rows; j++) {
-        this.field[i][j] = { mine: false, count: 0, open: false };
+        this.field[i][j] = {
+          mine: false,
+          count: 0,
+          open: false,
+          flagged: false,
+        };
       }
     }
 

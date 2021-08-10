@@ -5,7 +5,12 @@ var Model = (function () {
     function Model() {
         this.field = [];
     }
+    Model.prototype.toggleFlagged = function (col, row) {
+        this.field[col][row].flagged = !this.field[col][row].flagged;
+    };
     Model.prototype.setAsOpen = function (col, row) {
+        if (this.field[col][row].mine)
+            return true;
         this.field[col][row].open = true;
         if (this.field[col][row].count === 0) {
             for (var i = col - 1; i < col + 2; i++) {
@@ -35,7 +40,12 @@ var Model = (function () {
         for (var i = 0; i < cols; i++) {
             this.field[i] = [];
             for (var j = 0; j < rows; j++) {
-                this.field[i][j] = { mine: false, count: 0, open: false };
+                this.field[i][j] = {
+                    mine: false,
+                    count: 0,
+                    open: false,
+                    flagged: false,
+                };
             }
         }
         var numMines = Math.floor(cols * rows * factor);

@@ -12,14 +12,14 @@ export class Board {
   private cols: number;
   private rows: number;
   private target: HTMLDivElement;
-  private clickClb: (col: number, row: number) => void;
+  private clickClb: (col: number, row: number, rightClick: boolean) => void;
   private elements: HTMLDivElement[][] = [];
 
   constructor(
     target: HTMLElement,
     cols: number,
     rows: number,
-    clickClb: (col: number, row: number) => void
+    clickClb: (col: number, row: number, rightClick: boolean) => void
   ) {
     this.cols = cols;
     this.rows = rows;
@@ -32,32 +32,21 @@ export class Board {
   setMineField(field: minefield) {
     field.forEach((c, col) =>
       c.forEach((r, row) => {
-        if (r.open) this.setOpen(col, row);
-        if (r.mine) this.setMine(col, row);
-        else if (r.count > 0) {
-          this.setCount(col, row, r.count);
+        let cssClass = ["cell"];
+        if (r.flagged) cssClass.push("icon-flag");
+        if (r.open) cssClass.push("open");
+
+        const elem = this.elements[col][row];
+        elem.className = cssClass.join(" ");
+        elem.innerHTML = " ";
+        if (r.count > 0 && !r.mine) {
+          const countElemt = document.createElement("span");
+          countElemt.className = "count";
+          countElemt.innerText = r.count.toString();
+          elem.appendChild(countElemt);
         }
       })
     );
-  }
-  setCount(col: number, row: number, count: number) {
-    const countElemt = document.createElement("span");
-    countElemt.className = "count";
-    countElemt.innerText = count.toString();
-    const elem = this.elements[col][row];
-    elem.innerHTML = " ";
-    elem.appendChild(countElemt);
-  }
-
-  setMine(col: number, row: number) {
-    const elem = this.elements[col][row];
-    if (elem.className.indexOf("icon-bomb") === -1)
-      elem.className += " icon-bomb";
-  }
-
-  setOpen(col: number, row: number) {
-    const elem = this.elements[col][row];
-    if (elem.className.indexOf("open") === -1) elem.className += " open";
   }
 
   private generateBoard(cols: number, rows: number) {
@@ -92,18 +81,24 @@ export class Board {
       }
     }
 
-    div.addEventListener("click", (e: MouseEvent) => this.cellClickHandler(e));
+    div.addEventListener("click", (e: MouseEvent) =>
+      this.cellClickHandler(e, false)
+    );
+    div.addEventListener("contextmenu", (e: MouseEvent) =>
+      this.cellClickHandler(e, true)
+    );
 
     return div;
   }
 
-  private cellClickHandler(e: MouseEvent) {
+  private cellClickHandler(e: MouseEvent, contextClick: boolean) {
     const elem = e.currentTarget as HTMLElement;
     const index = parseInt(elem.getAttribute("i"));
 
     //elem.className += " open";
     const { col, row } = this.getCoordinates(index);
-    this.clickClb(col, row);
+    this.clickClb(col, row, contextClick);
+    e.preventDefault();
   }
   private getElement(col: number, row: number) {}
   private getCoordinates(index: number) {
