@@ -51,6 +51,11 @@ $size: 29px;
   }
 }
 
+[class^="icon-"].open:before,
+[class*="icon-"].open:before {
+  opacity: 1;
+}
+
 [class^="icon-"]:before,
 [class*=" icon-"]:before {
   font-family: "fontello";
@@ -62,7 +67,8 @@ $size: 29px;
   width: 1em;
   margin-right: 0.2em;
   text-align: center;
-  /* opacity: .8; */
+  opacity: 0.2;
+
   pointer-events: none;
 
   /* For safety - reset parent styles, that can break glyph codes*/

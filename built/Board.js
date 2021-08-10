@@ -11,6 +11,29 @@ var Board = (function () {
         this.clickClb = clickClb;
         this.generateBoard(cols, rows);
     }
+    Board.prototype.setMineField = function (field) {
+        var _this = this;
+        field.forEach(function (c, col) {
+            return c.forEach(function (r, row) {
+                if (r.mine)
+                    _this.setMine(col, row);
+                else if (r.count > 0) {
+                    _this.setCount(col, row, r.count);
+                }
+            });
+        });
+    };
+    Board.prototype.setCount = function (col, row, count) {
+        var countElemt = document.createElement("span");
+        countElemt.className = "count";
+        countElemt.innerText = count.toString();
+        var elem = this.elements[col][row];
+        elem.appendChild(countElemt);
+    };
+    Board.prototype.setMine = function (col, row) {
+        var elem = this.elements[col][row];
+        elem.className += " icon-bomb";
+    };
     Board.prototype.setOpen = function (col, row) {
         var elem = this.elements[col][row];
         elem.className += " open";

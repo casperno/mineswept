@@ -5,6 +5,8 @@
  *
  */
 
+import { minefield } from "./Model";
+
 export class Board {
   private demoMode = false;
   private cols: number;
@@ -25,6 +27,29 @@ export class Board {
     this.clickClb = clickClb;
 
     this.generateBoard(cols, rows);
+  }
+
+  setMineField(field: minefield) {
+    field.forEach((c, col) =>
+      c.forEach((r, row) => {
+        if (r.mine) this.setMine(col, row);
+        else if (r.count > 0) {
+          this.setCount(col, row, r.count);
+        }
+      })
+    );
+  }
+  setCount(col: number, row: number, count: number) {
+    const countElemt = document.createElement("span");
+    countElemt.className = "count";
+    countElemt.innerText = count.toString();
+    const elem = this.elements[col][row];
+    elem.appendChild(countElemt);
+  }
+
+  setMine(col: number, row: number) {
+    const elem = this.elements[col][row];
+    elem.className += " icon-bomb";
   }
 
   setOpen(col: number, row: number) {
