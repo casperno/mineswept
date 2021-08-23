@@ -21,11 +21,13 @@ export class Game {
 
     let board: Board;
     const clickHandler = (col: number, row: number, rightClick: boolean) => {
+      // init board on first clikc
       if (isFirstClick) {
         model.distributeMines({ col, row }, cols, rows);
         board.setMineField(model.getMinefield());
         isFirstClick = false;
       }
+      // mark with flag on right clikc
       if (rightClick) {
         model.toggleFlagged(col, row);
       } else {
