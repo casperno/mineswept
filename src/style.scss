@@ -18,11 +18,11 @@ body {
   margin: 20px;
   display: grid;
   //grid-template-columns: repeat(20, 5px); // set in code, matches number of cols
-  grid-gap: 1px;
+  grid-gap: 0px;
   color: #444;
 }
 
-$size: 29px;
+$size: 30px;
 
 .cell {
   display: inline-block;
@@ -38,6 +38,8 @@ $size: 29px;
 
   &.open {
     border: 1px solid darken($color: $bg-color, $amount: 10);
+    border-top-color: darken($color: $bg-color, $amount: 14);
+    border-left-color: darken($color: $bg-color, $amount: 14);
     background-color: darken($color: $bg-color, $amount: 10);
 
     .count {

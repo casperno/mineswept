@@ -16,10 +16,15 @@ export class Game {
 
     const model = new Model();
     this.boardContainer.innerHTML = "";
-    model.distributeMines(cols, rows);
+
+    let isFirstClick = true;
 
     let board: Board;
     const clickHandler = (col: number, row: number, rightClick: boolean) => {
+      if (isFirstClick) {
+        model.distributeMines({ col, row }, cols, rows);
+        board.setMineField(model.getMinefield());
+      }
       if (rightClick) {
         model.toggleFlagged(col, row);
       } else {
@@ -33,6 +38,6 @@ export class Game {
     };
     board = new Board(this.boardContainer, cols, rows, clickHandler);
 
-    board.setMineField(model.getMinefield());
+    //
   }
 }

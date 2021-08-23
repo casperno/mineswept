@@ -43,7 +43,13 @@ export class Model {
     return countedMines;
   }
 
-  distributeMines(cols: number, rows: number, factor = 0.1) {
+  distributeMines(
+    // make sure first click always is on a cell without mines in or around it.
+    initialClick: { col: number; row: number },
+    cols: number,
+    rows: number,
+    factor = 0.1
+  ) {
     for (let i = 0; i < cols; i++) {
       this.field[i] = [];
       for (let j = 0; j < rows; j++) {
@@ -61,6 +67,16 @@ export class Model {
     while (numMines > 0) {
       const col = this.getRandomInt(cols);
       const row = this.getRandomInt(rows);
+
+      // check that it's not near inital click
+      if (
+        col >= initialClick.col - 1 &&
+        col <= initialClick.col + 1 &&
+        row >= initialClick.row - 1 &&
+        row <= initialClick.row + 1
+      ) {
+        continue;
+      }
 
       if (!this.field[col][row].mine) {
         this.field[col][row].mine = true;

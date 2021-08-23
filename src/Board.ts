@@ -50,7 +50,7 @@ export class Board {
   }
 
   private generateBoard(cols: number, rows: number) {
-    this.target.style.gridTemplateColumns = `repeat(${cols}, 29px)`;
+    this.target.style.gridTemplateColumns = `repeat(${cols}, 30px)`;
 
     let c = 0;
     for (let i = 0; i < rows; i++) {

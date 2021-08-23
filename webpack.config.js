@@ -30,7 +30,7 @@ module.exports = {
   },
   mode: 'development',
   devServer: {
-    contentBase: "./src"
+  
   },
   devtool: 'inline-source-map',
   plugins: [
