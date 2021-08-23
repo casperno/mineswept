@@ -24,6 +24,7 @@ export class Game {
       if (isFirstClick) {
         model.distributeMines({ col, row }, cols, rows);
         board.setMineField(model.getMinefield());
+        isFirstClick = false;
       }
       if (rightClick) {
         model.toggleFlagged(col, row);

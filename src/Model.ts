@@ -12,7 +12,8 @@ export class Model {
   constructor() {}
 
   toggleFlagged(col: number, row: number) {
-    this.field[col][row].flagged = !this.field[col][row].flagged;
+    if (!this.field[col][row].open)
+      this.field[col][row].flagged = !this.field[col][row].flagged;
   }
 
   setAsOpen(col: number, row: number) {
