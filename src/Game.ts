@@ -21,20 +21,28 @@ export class Game {
 
     let board: Board;
     const clickHandler = (col: number, row: number, rightClick: boolean) => {
-      // init board on first clikc
+      // init board on first click
       if (isFirstClick) {
         model.distributeMines({ col, row }, cols, rows);
         board.setMineField(model.getMinefield());
         isFirstClick = false;
       }
-      // mark with flag on right clikc
+      // mark with flag on right click
       if (rightClick) {
         model.toggleFlagged(col, row);
       } else {
+        // open cell
         const isMine = model.setAsOpen(col, row);
         if (isMine) {
           alert("You bombed out!");
           this.initGame();
+        } else {
+          // count how many closed cells are left.
+          // If closed cells = number of mins => victory!
+          if (model.numMines === model.numClosedCells) {
+            alert("Congrats, you won!");
+            this.initGame();
+          }
         }
       }
       board.setMineField(model.getMinefield());

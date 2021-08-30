@@ -6,9 +6,10 @@ export type minefield = {
 }[][];
 
 export class Model {
-  cols: number;
-  rows: number;
-  field: minefield = [];
+  private cols: number;
+  private rows: number;
+  private field: minefield = [];
+  private _numMines: number;
   constructor() {}
 
   toggleFlagged(col: number, row: number) {
@@ -44,12 +45,26 @@ export class Model {
     return countedMines;
   }
 
+  get numMines() {
+    return this._numMines;
+  }
+
+  get numClosedCells() {
+    let closed = 0;
+    this.field.forEach((c, col) =>
+      c.forEach((r, row) => {
+        closed += this.field[col][row].open ? 0 : 1;
+      })
+    );
+    return closed;
+  }
+
   distributeMines(
     // make sure first click always is on a cell without mines in or around it.
     initialClick: { col: number; row: number },
     cols: number,
     rows: number,
-    factor = 0.1
+    factor = 0.02
   ) {
     for (let i = 0; i < cols; i++) {
       this.field[i] = [];
@@ -63,7 +78,7 @@ export class Model {
       }
     }
 
-    let numMines = Math.floor(cols * rows * factor);
+    let numMines = (this._numMines = Math.floor(cols * rows * factor));
 
     while (numMines > 0) {
       const col = this.getRandomInt(cols);
