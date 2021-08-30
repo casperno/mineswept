@@ -14,7 +14,7 @@ export class Game {
     const cols = 20;
     const rows = 20;
 
-    const model = new Model();
+    const model = new Model(cols, rows);
     this.boardContainer.innerHTML = "";
 
     let isFirstClick = true;
@@ -23,7 +23,7 @@ export class Game {
     const clickHandler = (col: number, row: number, rightClick: boolean) => {
       // init board on first click
       if (isFirstClick) {
-        model.distributeMines({ col, row }, cols, rows);
+        model.distributeMines({ col, row });
         board.setMineField(model.getMinefield());
         isFirstClick = false;
       }

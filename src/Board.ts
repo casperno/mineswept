@@ -13,7 +13,7 @@ export class Board {
   private rows: number;
   private target: HTMLDivElement;
   private clickClb: (col: number, row: number, rightClick: boolean) => void;
-  private elements: HTMLDivElement[][] = [];
+  private cells: HTMLDivElement[] = [];
 
   constructor(
     target: HTMLElement,
@@ -30,36 +30,31 @@ export class Board {
   }
 
   setMineField(field: minefield) {
-    field.forEach((c, col) =>
-      c.forEach((r, row) => {
-        let cssClass = ["cell"];
-        if (r.flagged) cssClass.push("icon-flag");
-        if (r.open) cssClass.push("open");
+    field.cells.forEach((r, index) => {
+      let cssClass = ["cell"];
+      if (r.flagged) cssClass.push("icon-flag");
+      if (r.open) cssClass.push("open");
 
-        const elem = this.elements[col][row];
-        elem.className = cssClass.join(" ");
-        elem.innerHTML = " ";
-        if (r.count > 0 && !r.mine) {
-          const countElemt = document.createElement("span");
-          countElemt.className = "count";
-          countElemt.innerText = r.count.toString();
-          elem.appendChild(countElemt);
-        }
-      })
-    );
+      const elem = this.cells[index];
+      elem.className = cssClass.join(" ");
+      elem.innerHTML = " ";
+      if (r.count > 0 && !r.mine) {
+        const countElemt = document.createElement("span");
+        countElemt.className = "count";
+        countElemt.innerText = r.count.toString();
+        elem.appendChild(countElemt);
+      }
+    });
   }
 
   private generateBoard(cols: number, rows: number) {
     this.target.style.gridTemplateColumns = `repeat(${cols}, 30px)`;
 
-    let c = 0;
-    for (let i = 0; i < rows; i++) {
-      for (let j = 0; j < cols; j++) {
-        const elem = this.createCell(c++);
-        if (!this.elements[j]) this.elements[j] = [];
-        this.elements[j][i] = elem;
-        this.target.append(elem);
-      }
+    for (let i = 0; i < rows * cols; i++) {
+      const elem = this.createCell(i);
+
+      this.cells.push(elem);
+      this.target.append(elem);
     }
   }
 
