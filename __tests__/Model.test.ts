@@ -5,7 +5,7 @@ it("can create a minefield of given size", () => {
   const model = new Model(20, 15);
   //   model.distributeMines({ col: 10, row: 10 });
 
-  //when
+  // when
   const minefield = model.getMinefield();
 
   // then
