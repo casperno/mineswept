@@ -10,7 +10,7 @@
     "start": "webpack serve --open"
   },
   "keywords": [],
-  "author": "",
+  "author": "Torbjørn Caspersen",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "*",
