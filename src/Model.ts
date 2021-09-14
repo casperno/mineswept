@@ -11,11 +11,14 @@ type cell = {
   flagged: boolean;
 };
 
+/** Data model for cell grid */
 export class Model {
   private cols: number;
   private rows: number;
   private cells: cell[] = [];
   private _numMines: number;
+
+  /** init model with size as `cols` and `rows` */
   constructor(cols: number, rows: number) {
     this.cols = cols;
     this.rows = rows;
@@ -31,6 +34,7 @@ export class Model {
     }
   }
 
+  /** get cell object at position */
   getCell(col: number, row: number) {
     return this.cells[col + row * this.cols];
   }
@@ -78,6 +82,7 @@ export class Model {
     return false;
   }
 
+  /** number of mines around a give cell */
   private countSurroundingMines(col: number, row: number) {
     let countedMines = 0;
     const cells = this.getSurroundingCells(col, row);
@@ -92,18 +97,21 @@ export class Model {
     return countedMines;
   }
 
+  /** total number of mines on board */
   get numMines() {
     return this._numMines;
   }
 
+  /** number of cells not opened by player */
   get numClosedCells() {
     return this.cells.reduce((p, cell) => (cell.open ? 0 : 1) + p, 0);
   }
 
+  /** inits board with random distribution of mines */
   distributeMines(
     // make sure first click always is on a cell without mines in or around it.
     initialClick: { col: number; row: number },
-    factor = 0.02
+    factor = 0.1 // difficulty as percent of cells that are mines
   ) {
     const cols = this.cols;
     const rows = this.rows;
@@ -113,7 +121,7 @@ export class Model {
       const col = this.getRandomInt(cols);
       const row = this.getRandomInt(rows);
 
-      // check that it's not near inital click
+      // check that mine is not placed on or next to initial click
       if (
         col >= initialClick.col - 1 &&
         col <= initialClick.col + 1 &&
@@ -128,6 +136,7 @@ export class Model {
         numMines--;
       }
     }
+    // calculate number of surrounding mines for each cell
     this.cells.forEach(
       (cell, index) =>
         (cell.count = this.countSurroundingMines(

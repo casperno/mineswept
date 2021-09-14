@@ -11,9 +11,11 @@ export class Game {
   }
 
   private initGame() {
-    const cols = 20;
+    const cols = 20; // TODO: Let user choose size and dificulty
     const rows = 20;
+    const difficulty = 0.12; // factor of how many cells are bombs
 
+    // data model containing state of cells
     const model = new Model(cols, rows);
     this.boardContainer.innerHTML = "";
 
@@ -23,7 +25,7 @@ export class Game {
     const clickHandler = (col: number, row: number, rightClick: boolean) => {
       // init board on first click
       if (isFirstClick) {
-        model.distributeMines({ col, row });
+        model.distributeMines({ col, row }, difficulty);
         board.setMineField(model.getMinefield());
         isFirstClick = false;
       }
@@ -47,8 +49,8 @@ export class Game {
       }
       board.setMineField(model.getMinefield());
     };
-    board = new Board(this.boardContainer, cols, rows, clickHandler);
 
-    //
+    // create board graphics, register click handlers
+    board = new Board(this.boardContainer, cols, rows, clickHandler);
   }
 }

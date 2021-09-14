@@ -1,12 +1,11 @@
+import { minefield } from "./Model";
+
 /**
  * Draws board.
  * Handles click events
  * Sets graphic states
  *
  */
-
-import { minefield } from "./Model";
-
 export class Board {
   private demoMode = false;
   private cols: number;
@@ -29,6 +28,7 @@ export class Board {
     this.generateBoard(cols, rows);
   }
 
+  /** update board with minefield from model */
   setMineField(field: minefield) {
     field.cells.forEach((r, index) => {
       let cssClass = ["cell"];
@@ -38,6 +38,7 @@ export class Board {
       const elem = this.cells[index];
       elem.className = cssClass.join(" ");
       elem.innerHTML = " ";
+      // add count of surrounding mines
       if (r.count > 0 && !r.mine) {
         const countElemt = document.createElement("span");
         countElemt.className = "count";
@@ -61,7 +62,7 @@ export class Board {
   private createCell(index: number) {
     const div = document.createElement("div");
     div.className = "cell";
-    div.setAttribute("i", index.toString());
+    div.setAttribute("i", index.toString()); // set index to be able to identify cell
 
     if (this.demoMode) {
       if (Math.random() > 0.2) {
@@ -90,12 +91,11 @@ export class Board {
     const elem = e.currentTarget as HTMLElement;
     const index = parseInt(elem.getAttribute("i"));
 
-    //elem.className += " open";
     const { col, row } = this.getCoordinates(index);
     this.clickClb(col, row, contextClick);
     e.preventDefault();
   }
-  private getElement(col: number, row: number) {}
+
   private getCoordinates(index: number) {
     return { col: index % this.cols, row: Math.floor(index / this.rows) };
   }
