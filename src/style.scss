@@ -16,10 +16,27 @@ body {
 
 .board-grid {
   margin: 20px;
+  width: 600px;
   display: grid;
   //grid-template-columns: repeat(20, 5px); // set in code, matches number of cols
   grid-gap: 0px;
   color: #444;
+}
+
+#output {
+position: absolute;
+top: 46px;
+right: 35px;
+  width: 400px;
+  #log {
+    width: 100%;
+    color: darken($bg-color, 40);
+    padding: 10px;
+    font-size: .8em;
+    height: 400px;
+    border: 1px solid darken($bg-color,  10);
+    margin-bottom: 20px;
+  }
 }
 
 $size: 30px;

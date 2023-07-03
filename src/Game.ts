@@ -4,8 +4,8 @@ import { Model } from "./Model";
 export class Game {
   private boardContainer: HTMLElement;
 
-  constructor() {
-    this.boardContainer = document.getElementById("board");
+  constructor(boardContainer: HTMLElement) {
+    this.boardContainer = boardContainer;
 
     this.initGame();
   }
