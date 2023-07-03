@@ -44,7 +44,12 @@ export class Game {
     this.board.setMineField(this.model.getMinefield());
   }
 
-  clickHandler(col: number, row: number, rightClick: boolean) {
+  clickHandler(
+    col: number,
+    row: number,
+    rightClick: boolean,
+    flagState?: boolean
+  ) {
     // init board on first click
     if (this.isFirstClick) {
       this.model.distributeMines({ col, row }, this.difficulty);
@@ -53,7 +58,7 @@ export class Game {
     }
     // mark with flag on right click
     if (rightClick) {
-      this.model.toggleFlagged(col, row);
+      this.model.toggleFlagged(col, row, flagState);
     } else {
       // open cell
       const isMine = this.model.setAsOpen(col, row);

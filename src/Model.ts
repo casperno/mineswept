@@ -4,7 +4,7 @@ export type minefield = {
   cells: cell[];
 };
 
-type cell = {
+export type cell = {
   mine: boolean;
   count: number;
   open: boolean;
@@ -16,7 +16,7 @@ type cell = {
 export class Model {
   private cols: number;
   private rows: number;
-  private cells: cell[] = [];
+  cells: cell[] = [];
   private _numMines: number;
 
   /** init model with size as `cols` and `rows` */
@@ -65,9 +65,9 @@ export class Model {
     return coord;
   }
 
-  toggleFlagged(col: number, row: number) {
+  toggleFlagged(col: number, row: number, state?: boolean) {
     const cell = this.getCell(col, row);
-    if (!cell.open) cell.flagged = !cell.flagged;
+    if (!cell.open) cell.flagged = state !== undefined ? state : !cell.flagged;
   }
 
   setAsOpen(col: number, row: number): boolean {

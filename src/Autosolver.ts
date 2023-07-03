@@ -1,4 +1,5 @@
 import { Game } from "./Game";
+import { cell } from "./Model";
 
 /** Auto solver of Mineswept. Goes step by step when button is pressed,
  * show element it's working on
@@ -25,29 +26,36 @@ export class Autosolver {
     //   this.game.mark(openCell[0], openCell[1]);
     // });
 
-    this.log("Mark easy bombs");
-    this.findClosedMatchingNumber();
+    this.next();
   }
 
-  private findClosedMatchingNumber() {
+  private findEqualCount(test: (c: cell) => boolean) {
     let openWithNumber = this.findOpenWithNumber().map((o) => ({
       col: o[0],
       row: o[1],
       cell: this.game.model.getCell(o[0], o[1]),
+      surrounding: [{ row: 0, col: 0 }],
     }));
 
-    openWithNumber.forEach((openCell) => {
-      const surrounding = this.game.model
-        .getSurroundingCells(openCell.col, openCell.row)
-        .map((coords) => this.game.model.getCell(coords.col, coords.row));
+    const closedEqualCount = openWithNumber.filter((openCell) => {
+      const surroundingCoods = this.game.model.getSurroundingCells(
+        openCell.col,
+        openCell.row
+      );
 
-      const surroundingAndClosed = surrounding.filter(
-        (cell) => !cell.open
+      const surrounding = surroundingCoods.map((coords) =>
+        this.game.model.getCell(coords.col, coords.row)
+      );
+
+      openCell.surrounding = surroundingCoods;
+
+      const surroundingAndClosed = surrounding.filter((cell) =>
+        test(cell)
       ).length;
 
-      if (surroundingAndClosed == openCell.cell.count)
-        this.game.mark(openCell.col, openCell.row);
+      return surroundingAndClosed == openCell.cell.count;
     });
+    return closedEqualCount;
   }
 
   private findOpenWithNumber() {
@@ -66,7 +74,38 @@ export class Autosolver {
   }
 
   private next() {
-    this.log("next");
+    this.log("Mark obvious bombs");
+    const surroundingClosedEqualCount = this.findEqualCount(
+      (cell: cell) => !cell.open
+    );
+    surroundingClosedEqualCount.forEach((openCell) =>
+      openCell.surrounding.forEach((around) =>
+        this.game.model.toggleFlagged(around.col, around.row, true)
+      )
+    );
+    // this.game.board.setMineField(this.game.model.getMinefield());
+
+    this.game.model.cells.forEach((c) => (c.highlighted = false));
+
+    this.log("Open obvious non-bombs");
+    const surroundingFlaggedEqualCount = this.findEqualCount(
+      (cell: cell) => cell.flagged
+    );
+    // open all closed, non-flagged surrounding
+    surroundingFlaggedEqualCount.forEach(
+      (cell) => {
+        const closedNotFlagged = cell.surrounding.filter((coords) => {
+          const c = this.game.model.getCell(coords.col, coords.row);
+          return !c.flagged && !c.open;
+        });
+        closedNotFlagged.forEach((c) => {
+          this.game.clickHandler(c.col, c.row, false);
+          this.game.mark(c.col, c.row);
+        });
+      }
+      //   this.game.mark(cell.col, cell.row)
+    );
+    this.game.board.setMineField(this.game.model.getMinefield());
   }
 
   private log(text: string) {
