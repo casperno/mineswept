@@ -1,5 +1,6 @@
 $text-color: #550033;
 $bg-color: rgb(202, 218, 180);
+$bg-highlight: rgb(216, 225, 96);
 
 @font-face {
   font-family: "fontello";
@@ -52,6 +53,13 @@ $size: 30px;
   text-align: center;
   box-sizing: border-box;
   cursor: pointer;
+
+  &.highlight {
+    background-color: $bg-highlight;
+    &.open {
+      background-color: darken($bg-highlight, 10);
+    }
+  }
 
   &.open {
     border: 1px solid darken($color: $bg-color, $amount: 10);

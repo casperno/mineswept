@@ -34,6 +34,7 @@ export class Board {
       let cssClass = ["cell"];
       if (r.flagged) cssClass.push("icon-flag");
       if (r.open) cssClass.push("open");
+      if (r.highlighted) cssClass.push("highlight");
 
       const elem = this.cells[index];
       elem.className = cssClass.join(" ");

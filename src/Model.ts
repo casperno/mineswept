@@ -9,6 +9,7 @@ type cell = {
   count: number;
   open: boolean;
   flagged: boolean;
+  highlighted: boolean;
 };
 
 /** Data model for cell grid */
@@ -30,6 +31,7 @@ export class Model {
         count: 0,
         open: false,
         flagged: false,
+        highlighted: false,
       });
     }
   }
