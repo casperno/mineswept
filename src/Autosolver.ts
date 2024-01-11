@@ -2,7 +2,7 @@ import { Game } from "./Game";
 import { cell } from "./Model";
 
 /** Auto solver of Mineswept. Goes step by step when button is pressed,
- * show element it's working on
+ * highlights the elements it's working on
  */
 export class Autosolver {
   private game: Game;
@@ -15,6 +15,7 @@ export class Autosolver {
     this.nextButton = nextButton;
 
     this.log("Autosolver first click");
+
     this.game.clickHandler(10, 10, false);
 
     this.nextButton.addEventListener("click", (e: MouseEvent) => {
@@ -22,9 +23,6 @@ export class Autosolver {
     });
 
     this.log("Mark open cells with number");
-    // this.findOpenWithNumber().forEach((openCell) => {
-    //   this.game.mark(openCell[0], openCell[1]);
-    // });
 
     this.next();
   }
@@ -83,7 +81,6 @@ export class Autosolver {
         this.game.model.toggleFlagged(around.col, around.row, true)
       )
     );
-    // this.game.board.setMineField(this.game.model.getMinefield());
 
     this.game.model.cells.forEach((c) => (c.highlighted = false));
 
@@ -91,23 +88,22 @@ export class Autosolver {
     const surroundingFlaggedEqualCount = this.findEqualCount(
       (cell: cell) => cell.flagged
     );
+
     // open all closed, non-flagged surrounding
-    surroundingFlaggedEqualCount.forEach(
-      (cell) => {
-        const closedNotFlagged = cell.surrounding.filter((coords) => {
-          const c = this.game.model.getCell(coords.col, coords.row);
-          return !c.flagged && !c.open;
-        });
-        closedNotFlagged.forEach((c) => {
-          this.game.clickHandler(c.col, c.row, false);
-          this.game.mark(c.col, c.row);
-        });
-      }
-      //   this.game.mark(cell.col, cell.row)
-    );
+    surroundingFlaggedEqualCount.forEach((cell) => {
+      const closedNotFlagged = cell.surrounding.filter((coords) => {
+        const c = this.game.model.getCell(coords.col, coords.row);
+        return !c.flagged && !c.open;
+      });
+      closedNotFlagged.forEach((c) => {
+        this.game.clickHandler(c.col, c.row, false);
+        this.game.mark(c.col, c.row);
+      });
+    });
     this.game.board.setMineField(this.game.model.getMinefield());
   }
 
+  /** route logging to passed html element */
   private log(text: string) {
     this.logout.innerText += text + "\n";
   }

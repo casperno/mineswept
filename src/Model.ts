@@ -12,7 +12,11 @@ export type cell = {
   highlighted: boolean;
 };
 
-/** Data model for cell grid */
+/** Data model for grid of cells.
+ * num/rows can be set.
+ * Cells have count, flags for: open, flagged and highlighted
+ * Highlighted is used to show Autosolver's focus
+ */
 export class Model {
   private cols: number;
   private rows: number;
