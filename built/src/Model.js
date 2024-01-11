@@ -13,6 +13,7 @@ var Model = (function () {
                 count: 0,
                 open: false,
                 flagged: false,
+                highlighted: false,
             });
         }
     }
@@ -41,10 +42,10 @@ var Model = (function () {
             addRow(1);
         return coord;
     };
-    Model.prototype.toggleFlagged = function (col, row) {
+    Model.prototype.toggleFlagged = function (col, row, state) {
         var cell = this.getCell(col, row);
         if (!cell.open)
-            cell.flagged = !cell.flagged;
+            cell.flagged = state !== undefined ? state : !cell.flagged;
     };
     Model.prototype.setAsOpen = function (col, row) {
         var _this = this;

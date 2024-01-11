@@ -19,6 +19,8 @@ var Board = (function () {
                 cssClass.push("icon-flag");
             if (r.open)
                 cssClass.push("open");
+            if (r.highlighted)
+                cssClass.push("highlight");
             var elem = _this.cells[index];
             elem.className = cssClass.join(" ");
             elem.innerHTML = " ";
