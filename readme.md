@@ -2,7 +2,7 @@
 
 A training excercise in building the old classic, Minesweeper, in typescript.
 
-Additionally, a step by step autosolver, where code plays the game.
+Additionally, a step by step autosolver, where the code plays the game by itself, showing the steps.
 
 Uses a custom font for icons for bomb and flag. `src/res/fontello.woff`
 
