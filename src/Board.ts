@@ -40,7 +40,7 @@ export class Board {
       elem.className = cssClass.join(" ");
       elem.innerHTML = " ";
       // add count of surrounding mines
-      if (r.count > 0 && !r.mine) {
+      if (r.count > 0 && !r.mine && r.open) {
         const countElemt = document.createElement("span");
         countElemt.className = "count";
         countElemt.innerText = r.count.toString();
