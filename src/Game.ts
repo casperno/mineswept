@@ -1,9 +1,9 @@
-import { Board } from "./Board";
+
 import { Model } from "./Model";
 
 export class Game {
   private boardContainer: HTMLElement;
-  board: Board;
+/*   board: Board; */
   isFirstClick: boolean;
   model: Model;
   difficulty: number;
@@ -11,9 +11,9 @@ export class Game {
   constructor(boardContainer: HTMLElement) {
     this.boardContainer = boardContainer;
 
-    this.initGame();
+   // this.initGame();
   }
-
+/* 
   private initGame() {
     const cols = 20; // TODO: Let user choose size and dificulty
     const rows = 20;
@@ -26,13 +26,13 @@ export class Game {
     this.isFirstClick = true;
 
     // create board graphics, register click handlers
-    this.board = new Board(
+     this.board = new Board(
       this.boardContainer,
       cols,
       rows,
       (col: number, row: number, rightClick: boolean) =>
         this.clickHandler(col, row, rightClick)
-    );
+    ); 
   }
 
   getMinefield() {
@@ -75,5 +75,5 @@ export class Game {
       }
     }
     this.board.setMineField(this.model.getMinefield());
-  }
+  } */
 }

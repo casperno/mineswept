@@ -1,8 +1,18 @@
 import "./style.scss";
 import { Game } from "./Game";
 import { Autosolver } from "./Autosolver";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import App from "./App";
 
-function init() {
+const root = createRoot(document.getElementById("root"));
+root.render(
+  <StrictMode>
+    <App />
+  </StrictMode>
+);
+
+/*function init() {
   // init a standard game
   let game = new Game(document.getElementById("board"));
 
@@ -20,4 +30,4 @@ function init() {
     );
   }
 }
-init();
+init();*/

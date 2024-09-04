@@ -1,15 +1,15 @@
 {
     "compilerOptions": {
         "noImplicitAny": true,
-        "target": "es5",
+        "target": "ES2022",
+        "module": "CommonJS",
         "removeComments": true,
         "preserveConstEnums": true,
         "outDir": "./public",
         "sourceMap": true,
+        "jsx": "react-jsx",
         "lib": [
             "dom",
-            "es2015",
-            "es2018.promise"
         ],
         "plugins": [
             { "name": "typescript-tslint-plugin" }

@@ -5,7 +5,7 @@ import { cell } from "./Model";
  * highlights the elements it's working on
  */
 export class Autosolver {
-  private game: Game;
+  /* private game: Game;
   private logout: HTMLElement;
   private nextButton: HTMLElement;
 
@@ -103,8 +103,8 @@ export class Autosolver {
     this.game.board.setMineField(this.game.model.getMinefield());
   }
 
-  /** route logging to passed html element */
+  // route logging to passed html element 
   private log(text: string) {
     this.logout.innerText += text + "\n";
-  }
+  } */
 }
