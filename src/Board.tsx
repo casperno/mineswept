@@ -1,3 +1,4 @@
+import { MouseEventHandler } from "react";
 import { cellState } from "./App";
 import { minefield } from "./Model";
 
@@ -11,16 +12,15 @@ export function Board({
   cols,
   rows,
   state,
+  handleClick,
 }: {
   cols: number;
   rows: number;
   state: cellState[];
+  handleClick: (i: number, context: boolean) => void;
 }) {
   const demoMode = false;
 
-  let target: HTMLDivElement;
-  let clickClb: (col: number, row: number, rightClick: boolean) => void;
-  const cells: HTMLDivElement[] = [];
   /* 
   function init(
     target: HTMLElement,
@@ -45,9 +45,15 @@ export function Board({
         <Cell
           index={i}
           state={state[i]}
-          onSquareClick={() =>
-            clickClb(i % this.cols, Math.floor(i / this.rows), false)
-          }
+          onSquareClick={(e: React.MouseEvent) => {
+            e.preventDefault();
+            handleClick(i, false);
+          }}
+          onContextMenu={(e: React.MouseEvent) => {
+            e.preventDefault();
+            console.log("context");
+            handleClick(i, true);
+          }}
         ></Cell>
       ))}
     </div>
@@ -60,10 +66,12 @@ function Cell({
   index,
   state,
   onSquareClick,
+  onContextMenu,
 }: {
   index: number;
   state: cellState;
-  onSquareClick: () => void;
+  onSquareClick: React.MouseEventHandler<HTMLButtonElement>;
+  onContextMenu: React.MouseEventHandler<HTMLButtonElement>;
 }) {
   let cssClass = ["cell"];
   if (state.flagged) cssClass.push("icon-flag");
@@ -71,11 +79,12 @@ function Cell({
   if (state.highlighted) cssClass.push("highlight");
 
   return (
-    <div
+    <button
       key={index}
       className={cssClass.join(" ")}
       onClick={onSquareClick}
-    ></div>
+      onContextMenu={onContextMenu}
+    ></button>
   );
 }
 

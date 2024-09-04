@@ -19,15 +19,24 @@ export default function Game() {
       highlighted: false,
     });
   }
-  let [state, setState] = useState<cellState[]>(initial);
+  const [state, setState] = useState<cellState[]>(initial);
+
+  function handleClick(i: number, context: boolean) {
+    let nextstate = state.slice();
+    console.log(i, context);
+    if (context) nextstate[i].flagged = !nextstate[i].flagged;
+
+    setState(nextstate);
+  }
+
   return (
     <>
       <h1>Mineswept, the game</h1>
-      <Board cols={cols} rows={rows} state={state} />
-      <div id="output">
+      <Board cols={cols} rows={rows} state={state} handleClick={handleClick} />
+      {/*  <div id="output">
         <div id="log"></div>
         <button id="next">Next</button>
-      </div>
+      </div> */}
     </>
   );
 }
