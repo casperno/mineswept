@@ -75,5 +75,5 @@ export class Game {
       }
     }
     this.board.setMineField(this.model.getMinefield());
-  } */
+  }*/
 }

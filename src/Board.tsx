@@ -47,11 +47,12 @@ export function Board({
           state={state[i]}
           onSquareClick={(e: React.MouseEvent) => {
             e.preventDefault();
+            // console.log("normal click");
             handleClick(i, false);
           }}
           onContextMenu={(e: React.MouseEvent) => {
             e.preventDefault();
-            console.log("context");
+            // console.log("context");
             handleClick(i, true);
           }}
         ></Cell>
@@ -77,6 +78,15 @@ function Cell({
   if (state.flagged) cssClass.push("icon-flag");
   if (state.open) cssClass.push("open");
   if (state.highlighted) cssClass.push("highlight");
+  /*// add count of surrounding mines
+      if (r.count > 0 && !r.mine && r.open) {
+        const countElemt = document.createElement("span");
+        countElemt.className = "count";
+        countElemt.innerText = r.count.toString();
+        elem.appendChild(countElemt);
+      */
+
+  // && state.open
 
   return (
     <button
@@ -84,7 +94,14 @@ function Cell({
       className={cssClass.join(" ")}
       onClick={onSquareClick}
       onContextMenu={onContextMenu}
-    ></button>
+    >
+      {state.count > 0 && !state.mine ? (
+        <span className="count">{state.count}</span>
+      ) : (
+        ""
+      )}
+      {state.mine}
+    </button>
   );
 }
 
