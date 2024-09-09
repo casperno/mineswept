@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Board } from "./Board";
+import { cell } from "./Model";
 
 export type cellState = {
   open: boolean;
@@ -7,6 +8,7 @@ export type cellState = {
   count: number;
   flagged: boolean;
   highlighted: boolean;
+  id: number;
 };
 
 const cols = 10;
@@ -18,6 +20,7 @@ export default function Game() {
   let initial: cellState[] = [];
   for (let i = 0; i < rows * cols; i++) {
     initial.push({
+      id: i,
       open: false,
       mine: false,
       count: 0,
@@ -26,6 +29,8 @@ export default function Game() {
     });
   }
   const [state, setState] = useState<cellState[]>(initial);
+
+  let numMines = 10;
 
   console.log("game", isFirstClick);
 
@@ -40,6 +45,24 @@ export default function Game() {
     }
 
     if (context) nextstate[i].flagged = !nextstate[i].flagged;
+    else {
+      // open cell
+      const isMine = setAsOpen(i, nextstate);
+      if (isMine) {
+        alert("You bombed out!");
+        // this.initGame();
+      } else {
+        // count how many closed cells are left.
+        // If closed cells = number of mins => victory!
+        const numClosedCells = state.reduce(
+          (count, cell) => count + (cell.open ? 0 : 1),
+          0
+        );
+        if (numMines === numClosedCells) {
+          alert("Congrats, you won!");
+        }
+      }
+    }
 
     setState(nextstate);
   }
@@ -98,6 +121,21 @@ function initMineField(state: cellState[], clickedIndex: number) {
   return newState;
 }
 
+function setAsOpen(index: number, state: cellState[]): boolean {
+  const cell = state[index];
+  if (cell.mine) return true;
+  if (cell.open) return false;
+  cell.open = true;
+
+  // if cell has no surrounding bombs, open adjacent cells
+  if (cell.count === 0) {
+    const coord = getCoordinates(index);
+    const cells = getSurroundingCells(coord.col, coord.row, state);
+    cells.forEach((c, i) => setAsOpen(getCell(c.col, c.row, state).id, state));
+  }
+  return false;
+}
+
 function getCoordinates(index: number) {
   return { col: index % cols, row: Math.floor(index / rows) };
 }
@@ -124,9 +162,9 @@ function countSurroundingMines(col: number, row: number, state: cellState[]) {
 
 /** get up to nine cells on and around a point */
 function getSurroundingCells(col: number, row: number, state: cellState[]) {
-  const coord: { col: number; row: number }[] = [];
+  const coords: { col: number; row: number }[] = [];
 
-  if (col < 0 || row < 0 || col >= cols || row >= rows) return coord;
+  if (col < 0 || row < 0 || col >= cols || row >= rows) return coords;
 
   const atTop = row === 0;
   const atBottom = row === rows - 1;
@@ -134,15 +172,14 @@ function getSurroundingCells(col: number, row: number, state: cellState[]) {
   const atRight = col === cols - 1;
 
   function addRow(delta: number) {
-    if (!atLeft) coord.push({ col: col - 1, row: row + delta });
-    coord.push({ col, row: row + delta });
-    if (!atRight) coord.push({ col: col + 1, row: row + delta });
+    if (!atLeft) coords.push({ col: col - 1, row: row + delta });
+    coords.push({ col, row: row + delta });
+    if (!atRight) coords.push({ col: col + 1, row: row + delta });
   }
   if (!atTop) addRow(-1);
   addRow(0);
   if (!atBottom) addRow(1);
-
-  return coord;
+  return coords;
 }
 
 function getRandomInt(max: number) {

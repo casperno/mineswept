@@ -85,7 +85,7 @@ export class Model {
       const cells = this.getSurroundingCells(col, row);
       cells.forEach((c) => this.setAsOpen(c.col, c.row));
     }
-    return false;
+    return cell.mine;
   }
 
   /** number of mines around a give cell */

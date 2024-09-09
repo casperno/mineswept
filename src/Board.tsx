@@ -39,12 +39,12 @@ export function Board({
   return (
     <div
       className="board-grid"
+      key="board"
       style={{ gridTemplateColumns: `repeat(${cols}, 30px)` }}
     >
-      {Array.from({ length: cols * rows }).map((_, i) => (
+      {state.map((s, i) => (
         <Cell
-          index={i}
-          state={state[i]}
+          state={s}
           onSquareClick={(e: React.MouseEvent) => {
             e.preventDefault();
             // console.log("normal click");
@@ -64,12 +64,10 @@ export function Board({
 function generateBoard(cols: number, rows: number) {}
 
 function Cell({
-  index,
   state,
   onSquareClick,
   onContextMenu,
 }: {
-  index: number;
   state: cellState;
   onSquareClick: React.MouseEventHandler<HTMLButtonElement>;
   onContextMenu: React.MouseEventHandler<HTMLButtonElement>;
@@ -78,6 +76,7 @@ function Cell({
   if (state.flagged) cssClass.push("icon-flag");
   if (state.open) cssClass.push("open");
   if (state.highlighted) cssClass.push("highlight");
+  // if (state.mine) cssClass.push("icon-bomb");
   /*// add count of surrounding mines
       if (r.count > 0 && !r.mine && r.open) {
         const countElemt = document.createElement("span");
@@ -90,17 +89,16 @@ function Cell({
 
   return (
     <button
-      key={index}
+      key={state.id}
       className={cssClass.join(" ")}
       onClick={onSquareClick}
       onContextMenu={onContextMenu}
     >
-      {state.count > 0 && !state.mine ? (
+      {state.count > 0 && !state.mine && state.open ? (
         <span className="count">{state.count}</span>
       ) : (
         ""
       )}
-      {state.mine}
     </button>
   );
 }
