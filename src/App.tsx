@@ -32,12 +32,8 @@ export default function Game() {
 
   let numMines = 10;
 
-  console.log("game", isFirstClick);
-
   function handleClick(i: number, context: boolean) {
     let nextstate = state.slice();
-
-    console.log(i, isFirstClick);
 
     if (isFirstClick) {
       isFirstClick = false;

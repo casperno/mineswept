@@ -39,11 +39,12 @@ export function Board({
   return (
     <div
       className="board-grid"
-      key="board"
+      key="board$4"
       style={{ gridTemplateColumns: `repeat(${cols}, 30px)` }}
     >
       {state.map((s, i) => (
         <Cell
+          key={s.id}
           state={s}
           onSquareClick={(e: React.MouseEvent) => {
             e.preventDefault();
@@ -89,7 +90,6 @@ function Cell({
 
   return (
     <button
-      key={state.id}
       className={cssClass.join(" ")}
       onClick={onSquareClick}
       onContextMenu={onContextMenu}
