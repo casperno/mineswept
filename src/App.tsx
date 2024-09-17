@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Board } from "./Board";
-import { cell } from "./Model";
 
 export type cellState = {
   open: boolean;
@@ -8,11 +7,13 @@ export type cellState = {
   count: number;
   flagged: boolean;
   highlighted: boolean;
-  id: number;
+  index: number;
+  row: number;
+  col: number;
 };
 
-const cols = 10;
-const rows = 10;
+const cols = 15;
+const rows = 15;
 const factor = 0.1; // difficulty as percent of cells that are mines
 let isFirstClick = true;
 
@@ -20,12 +21,14 @@ export default function Game() {
   let initial: cellState[] = [];
   for (let i = 0; i < rows * cols; i++) {
     initial.push({
-      id: i,
+      index: i,
       open: false,
       mine: false,
       count: 0,
       flagged: false,
       highlighted: false,
+      row: Math.floor(i / cols),
+      col: i % cols,
     });
   }
   const [state, setState] = useState<cellState[]>(initial);
@@ -40,11 +43,13 @@ export default function Game() {
       nextstate = initMineField(nextstate, i);
     }
 
-    if (context) nextstate[i].flagged = !nextstate[i].flagged;
-    else {
+    if (context) {
+      nextstate[i].flagged = !nextstate[i].flagged;
+    } else {
       // open cell
-      const isMine = setAsOpen(i, nextstate);
+      const isMine = setAsOpen(nextstate[i], nextstate);
       if (isMine) {
+        nextstate.forEach((s) => (s.open = true));
         alert("You bombed out!");
         // this.initGame();
       } else {
@@ -78,7 +83,7 @@ export default function Game() {
 function initMineField(state: cellState[], clickedIndex: number) {
   let numMines = Math.floor(cols * rows * factor);
 
-  const initialClick = getCoordinates(clickedIndex);
+  const clickedCell = state[clickedIndex];
 
   const newState = state.slice();
 
@@ -90,14 +95,14 @@ function initMineField(state: cellState[], clickedIndex: number) {
 
     // check that mine is not placed on or next to initial click
     if (
-      col >= initialClick.col - 1 &&
-      col <= initialClick.col + 1 &&
-      row >= initialClick.row - 1 &&
-      row <= initialClick.row + 1
+      col >= clickedCell.col - 1 &&
+      col <= clickedCell.col + 1 &&
+      row >= clickedCell.row - 1 &&
+      row <= clickedCell.row + 1
     ) {
       continue;
     }
-    const cell = getCell(col, row, state);
+    const cell = state[col + row * cols];
     if (!cell.mine) {
       cell.mine = true;
       numMines--;
@@ -106,50 +111,34 @@ function initMineField(state: cellState[], clickedIndex: number) {
 
   // calculate number of surrounding mines for each cell
   newState.forEach(
-    (cell, index) =>
-      (cell.count = countSurroundingMines(
-        index % cols,
-        Math.floor(index / rows),
-        state
-      ))
+    (cell, index) => (cell.count = countSurroundingMines(cell, state))
   );
 
   return newState;
 }
 
-function setAsOpen(index: number, state: cellState[]): boolean {
-  const cell = state[index];
+function setAsOpen(cell: cellState, state: cellState[]): boolean {
   if (cell.mine) return true;
   if (cell.open) return false;
   cell.open = true;
 
   // if cell has no surrounding bombs, open adjacent cells
   if (cell.count === 0) {
-    const coord = getCoordinates(index);
-    const cells = getSurroundingCells(coord.col, coord.row, state);
-    cells.forEach((c, i) => setAsOpen(getCell(c.col, c.row, state).id, state));
+    const cells = getSurroundingCells(cell, state);
+    cells.forEach((c, i) => setAsOpen(c, state));
   }
   return false;
 }
 
-function getCoordinates(index: number) {
-  return { col: index % cols, row: Math.floor(index / rows) };
-}
-
-/** get cell object at position */
-function getCell(col: number, row: number, state: cellState[]) {
-  return state[col + row * cols];
-}
-
 /** number of mines around a give cell */
-function countSurroundingMines(col: number, row: number, state: cellState[]) {
+function countSurroundingMines(cell: cellState, state: cellState[]) {
   let countedMines = 0;
-  const cells = getSurroundingCells(col, row, state);
+  const cells = getSurroundingCells(cell, state);
 
-  cells.forEach((c) => {
-    const cell = getCell(c.col, c.row, state);
+  cells.forEach((cell) => {
+    // const cell = getCell(c.col, c.row, state);
 
-    if (!cell) console.log("no cell!", c.col, c.row);
+    if (!cell) console.log("no cell!");
     if (cell.mine) countedMines++;
   });
 
@@ -157,25 +146,26 @@ function countSurroundingMines(col: number, row: number, state: cellState[]) {
 }
 
 /** get up to nine cells on and around a point */
-function getSurroundingCells(col: number, row: number, state: cellState[]) {
-  const coords: { col: number; row: number }[] = [];
+function getSurroundingCells(cell: cellState, state: cellState[]) {
+  const cellsAround: cellState[] = [];
 
-  if (col < 0 || row < 0 || col >= cols || row >= rows) return coords;
+  if (cell.col < 0 || cell.row < 0 || cell.col >= cols || cell.row >= rows)
+    return cellsAround;
 
-  const atTop = row === 0;
-  const atBottom = row === rows - 1;
-  const atLeft = col === 0;
-  const atRight = col === cols - 1;
+  const atTop = cell.row === 0;
+  const atBottom = cell.row === rows - 1;
+  const atLeft = cell.col === 0;
+  const atRight = cell.col === cols - 1;
 
   function addRow(delta: number) {
-    if (!atLeft) coords.push({ col: col - 1, row: row + delta });
-    coords.push({ col, row: row + delta });
-    if (!atRight) coords.push({ col: col + 1, row: row + delta });
+    if (!atLeft) cellsAround.push(state[cell.index - 1 + delta * cols]);
+    cellsAround.push(state[cell.index + delta * cols]);
+    if (!atRight) cellsAround.push(state[cell.index + 1 + delta * cols]);
   }
   if (!atTop) addRow(-1);
   addRow(0);
   if (!atBottom) addRow(1);
-  return coords;
+  return cellsAround;
 }
 
 function getRandomInt(max: number) {

@@ -1,5 +1,4 @@
-import { Game } from "./Game";
-import { cell } from "./Model";
+
 
 /** Auto solver of Mineswept. Goes step by step when button is pressed,
  * highlights the elements it's working on

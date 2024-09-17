@@ -1,11 +1,11 @@
 
 import { Model } from "./Model";
 
-export class Game {
+export class Gddame {
   private boardContainer: HTMLElement;
 /*   board: Board; */
   isFirstClick: boolean;
-  model: Model;
+  // model: Model;
   difficulty: number;
 
   constructor(boardContainer: HTMLElement) {
